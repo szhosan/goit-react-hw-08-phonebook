@@ -1,0 +1,19 @@
+.listItemContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.button {
+  height: 25px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.nameContainer {
+  width: 250px;
+}
+
+.numberContainer {
+  width: 250px;
+}
