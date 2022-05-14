@@ -3,7 +3,6 @@ import {
   combineReducers,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import contactsReducer from './contacts/contacts-reducer';
 import {
   persistStore,
   persistReducer,
@@ -15,16 +14,14 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { contactsReducer } from './contacts';
+import { authReducer } from './auth';
 
-const persistConfig = {
-  key: 'phoneBookContacts',
+const authPersistConfig = {
+  key: 'phoneBookAuth',
   storage,
-  blacklist: ['filter'],
+  whitelist: ['token'],
 };
-
-const rootReducer = combineReducers({ contacts: contactsReducer });
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -35,12 +32,14 @@ const middleware = [
 ];
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    auth: persistReducer(authPersistConfig, authReducer),
+    contacts: contactsReducer,
+  },
   middleware,
   devTools: process.env.NODE_ENV === 'development',
 });
 
-const persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
-export default { store, persistor };
