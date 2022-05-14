@@ -8,14 +8,14 @@ function App() {
   const contactAmount = useSelector(state => state.contacts.items.length);
   return (
     <>
-      <Section title="Phone Book">
+      {/*  <Section title="Phone Book">
         <AddContactForm />
-      </Section>
-      {contactAmount > 0 && (
+      </Section> */}
+      {/* {contactAmount > 0 && (
         <Section title="Contacts">
           <ContactSearch />
           <ContactsList />
-        </Section>
+        </Section> */}
       )}
     </>
   );

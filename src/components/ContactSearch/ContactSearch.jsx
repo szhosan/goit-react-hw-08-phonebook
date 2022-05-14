@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 
 const ContactSearch = () => {
   const value = useSelector(state => state.contacts.filter);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const onChange = e => {
-    dispatch(contactActions.changeFilter(e.currentTarget.value));
+    //dispatch(contactActions.changeFilter(e.currentTarget.value));
   };
   return (
     <label>
