@@ -1,25 +1,14 @@
-.form_label {
-  font-size: 18px;
+.form_label{
+    font-size: 18px;
 }
 
-.form {
-  display: flex;
-  align-items: center;
-  width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 15px;
-  padding: 20px;
-  outline: 1px solid black;
+.form{
+    width: 300px;
+    padding: 15px;
+    outline: 1px solid black;
 }
 
-.button {
-  height: 25px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.input {
-  width: 200px;
-  margin-right: 10px;
+.button{
+    margin-top: 10px;
+    cursor: pointer;
 }

@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import s from './AddContactForm.module.css';
-import { useCreateContactMutation } from 'redux/contacts/contactsSlice';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import PropTypes from 'prop-types';
+import contactActions from '../../redux/contacts/contact-actions';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-function AddContactForm({ contacts }) {
+function AddContactForm() {
   const [contact, setContact] = useState({ name: '', number: '' });
-  const [createContact, { isLoading }] = useCreateContactMutation();
+
+  const dispatch = useDispatch();
+  const addedContacts = useSelector(state => state.contacts.items);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -25,68 +27,50 @@ function AddContactForm({ contacts }) {
     setContact({ name: '', number: '' });
   };
 
-  const HandleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (nameAlreadyExist(contacts, contact.name)) {
-      Notify.warning(`Name ${contact.name} is present in your phone book`);
-      return;
+    if (!nameAlreadyExist(addedContacts, contact.name)) {
+      dispatch(contactActions.addContact(contact));
+    } else {
+      alert(`Name ${contact.name} already exists in your phone book`);
     }
-    createContact(contact).then(
-      Notify.success(
-        `Name ${contact.name} successfully added to your phone book`
-      )
-    );
 
     reset();
   };
 
   return (
-    <form className={s.form} onSubmit={HandleSubmit}>
-      <div>
-        <label className={s.form_label}>
-          Name
-          <br />
-          <input
-            className={s.input}
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer"
-            required
-            value={contact.name}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label className={s.form_label}>
-          Number
-          <br />
-          <input
-            className={s.input}
-            type="tel"
-            name="number"
-            required
-            value={contact.number}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <button disabled={isLoading} className={s.button} type="submit">
+    <form className={s.form} onSubmit={handleSubmit}>
+      <label className={s.form_label}>
+        Name
+        <br />
+        <input
+          type="text"
+          name="name"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer"
+          required
+          value={contact.name}
+          onChange={handleChange}
+        />
+      </label>
+      <br />
+      <label>
+        Number
+        <br />
+        <input
+          type="tel"
+          name="number"
+          required
+          value={contact.number}
+          onChange={handleChange}
+        />
+      </label>
+      <br />
+      <button className={s.button} type="submit">
         Add contact
       </button>
     </form>
   );
 }
-
-AddContactForm.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-};
 
 export default AddContactForm;

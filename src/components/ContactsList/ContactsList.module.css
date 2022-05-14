@@ -1,9 +1,15 @@
 .list {
-  margin-left: auto;
-  margin-right: auto;
-  width: 600px;
+  width: 300px;
   padding: 10px;
-  padding-left: 30px;
+  margin: 0;
+}
 
-  outline: 1px solid black;
+.listItemContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.button {
+  cursor: pointer;
 }
