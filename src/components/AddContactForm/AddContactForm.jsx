@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import s from './AddContactForm.module.css';
-import contactActions from '../../redux/contacts/contact-actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 
 function AddContactForm() {
   const [contact, setContact] = useState({ name: '', number: '' });
 
-  //const dispatch = useDispatch();
-  //const addedContacts = useSelector(state => state.contacts.items);
+  const dispatch = useDispatch();
+  const addedContacts = useSelector(contactsSelectors.getAddedContacts);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -29,11 +29,11 @@ function AddContactForm() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    /* if (!nameAlreadyExist(addedContacts, contact.name)) {
-      dispatch(contactActions.addContact(contact));
+    if (!nameAlreadyExist(addedContacts, contact.name)) {
+      dispatch(contactsOperations.addContact(contact));
     } else {
       alert(`Name ${contact.name} already exists in your phone book`);
-    } */
+    }
 
     reset();
   };

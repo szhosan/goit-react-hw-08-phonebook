@@ -41,5 +41,3 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
