@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ReactPhoneInput from 'react-phone-input-material-ui';
 import { useConfirm } from 'material-ui-confirm';
+import PropTypes from 'prop-types';
 
 const theme = createTheme();
 
@@ -139,3 +140,8 @@ function AddEditContactForm({ onClose, contactIdToEdit = null }) {
 }
 
 export default AddEditContactForm;
+
+AddEditContactForm.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  contactIdToEdit: PropTypes.string,
+};
