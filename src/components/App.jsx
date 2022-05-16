@@ -11,6 +11,7 @@ import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import { useSelector } from 'react-redux';
 import { authSelectors } from 'redux/auth';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ function App() {
         <>
           <PhoneBookAppBar />
           <Routes>
-            <Route path="/" element={<h2>Main page</h2>} />
+            <Route path="*" element={<Navigate to="/contacts" />} />
             <Route
               path="/login"
               element={
