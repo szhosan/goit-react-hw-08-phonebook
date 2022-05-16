@@ -1,4 +1,3 @@
-import AddContactForm from 'components/AddContactForm/AddContactForm';
 import ContactsList from 'components/ContactsList/ContactsList';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -13,7 +12,6 @@ export default function ContactsView() {
   return (
     <>
       <ConfirmProvider>
-        <AddContactForm />
         <ContactsList />
       </ConfirmProvider>
     </>

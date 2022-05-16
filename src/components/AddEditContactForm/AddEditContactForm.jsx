@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { contactsOperations, contactsSelectors } from 'redux/contacts';
@@ -14,7 +14,7 @@ import { useConfirm } from 'material-ui-confirm';
 
 const theme = createTheme();
 
-function AddContactForm() {
+function AddEditContactForm({ onClose, contactIdToEdit = null }) {
   const [contact, setContact] = useState({ name: '', number: '' });
   const dispatch = useDispatch();
   const addedContacts = useSelector(contactsSelectors.getAddedContacts);
@@ -27,9 +27,15 @@ function AddContactForm() {
     });
   };
 
+  useEffect(() => {
+    if (contactIdToEdit) {
+      setContact(addedContacts.find(contact => contact.id === contactIdToEdit));
+    }
+  }, [contactIdToEdit, addedContacts]);
+
   const onNumberChange = value => {
     setContact(prevState => {
-      return { ...prevState, ['number']: value };
+      return { ...prevState, number: value };
     });
   };
 
@@ -53,13 +59,29 @@ function AddContactForm() {
       }).catch(() => {});
       return;
     }
-    if (!nameAlreadyExist(addedContacts, contact.name)) {
-      dispatch(contactsOperations.addContact(contact));
+    if (contactIdToEdit) {
+      dispatch(
+        contactsOperations.editContact({
+          id: contactIdToEdit,
+          name: contact.name,
+          number: contact.number,
+        })
+      );
+      onClose();
+      reset();
     } else {
-      alert(`Name ${contact.name} already exists in your phone book`);
+      if (!nameAlreadyExist(addedContacts, contact.name)) {
+        dispatch(contactsOperations.addContact(contact));
+        onClose();
+        reset();
+      } else {
+        confirmDialog({
+          title: `Oh no!`,
+          description: `Name ${contact.name} already exists in your phone book`,
+          cancellationText: '',
+        }).catch(() => {});
+      }
     }
-
-    reset();
   };
 
   return (
@@ -75,7 +97,7 @@ function AddContactForm() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Add new contact
+            {contactIdToEdit ? 'Edit contact' : 'Add new contact'}
           </Typography>
           <Box
             component="form"
@@ -107,7 +129,7 @@ function AddContactForm() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Add
+              {contactIdToEdit ? 'Save changes' : 'Add'}
             </Button>
           </Box>
         </Box>
@@ -116,4 +138,4 @@ function AddContactForm() {
   );
 }
 
-export default AddContactForm;
+export default AddEditContactForm;

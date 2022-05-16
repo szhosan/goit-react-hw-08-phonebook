@@ -17,12 +17,32 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { useConfirm } from 'material-ui-confirm';
-
+import Modal from '@mui/material/Modal';
+import AddEditContactForm from 'components/AddEditContactForm/AddEditContactForm';
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 const ContactsList = () => {
   const contacts = useSelector(contactsSelectors.getFilteredContacts);
   const dispatch = useDispatch();
   const [checked, setChecked] = useState([]);
   const confirmDialog = useConfirm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [contactIdToEdit, setContactIdToEdit] = useState('');
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setContactIdToEdit('');
+  };
 
   const handleToggle = value => () => {
     const currentIndex = checked.indexOf(value);
@@ -51,74 +71,85 @@ const ContactsList = () => {
       .catch(() => {});
   };
 
+  const handleEditContactClick = id => {
+    setContactIdToEdit(id);
+    setIsModalOpen(true);
+  };
+
   return (
-    <Container maxWidth="xs" sx={{ mt: 2 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-        }}
-      >
-        <IconButton aria-label="add" size="large">
-          <AddCircleOutlineOutlinedIcon />
-        </IconButton>
-        <ContactSearch />
-        <IconButton
-          aria-label="delete"
-          size="large"
-          disabled={checked.length < 1}
-          onClick={handleDelete}
+    <>
+      <Container maxWidth="xs" sx={{ mt: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}
         >
-          <DeleteIcon />
-        </IconButton>
-      </Box>
-      <List
-        dense
-        sx={{ width: '100%', maxWidth: 385, bgcolor: 'background.paper' }}
-      >
-        {contacts.map(({ id, name }) => {
-          const labelId = `checkbox-list-secondary-label-${id}`;
-          return (
-            <ListItem
-              key={id}
-              secondaryAction={
-                <Checkbox
-                  edge="end"
-                  onChange={handleToggle(id)}
-                  checked={checked.indexOf(id) !== -1}
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              }
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar alt={`${name}`} />
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={`${name}`} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-    </Container>
+          <IconButton aria-label="add" size="large" onClick={handleOpenModal}>
+            <AddCircleOutlineOutlinedIcon />
+          </IconButton>
+          <ContactSearch />
+          <IconButton
+            aria-label="delete"
+            size="large"
+            disabled={checked.length < 1}
+            onClick={handleDelete}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+        <List
+          dense
+          sx={{ width: '100%', maxWidth: 385, bgcolor: 'background.paper' }}
+        >
+          {contacts.map(({ id, name, number }) => {
+            const labelId = `checkbox-list-secondary-label-${id}`;
+            return (
+              <ListItem
+                key={id}
+                secondaryAction={
+                  <Checkbox
+                    edge="end"
+                    onChange={handleToggle(id)}
+                    checked={checked.indexOf(id) !== -1}
+                    inputProps={{ 'aria-labelledby': labelId }}
+                  />
+                }
+                disablePadding
+              >
+                <ListItemButton onClick={() => handleEditContactClick(id)}>
+                  <ListItemAvatar>
+                    <Avatar alt={`${name}`} />
+                  </ListItemAvatar>
+                  <ListItemText id={labelId} primary={`${name}`} />
+                  <ListItemText
+                    sx={{ textAlign: 'right' }}
+                    primary={`${number}`}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Container>
+      {isModalOpen && (
+        <Modal
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <AddEditContactForm
+              onClose={handleCloseModal}
+              contactIdToEdit={contactIdToEdit ? contactIdToEdit : null}
+            />
+          </Box>
+        </Modal>
+      )}
+    </>
   );
 };
 
 export default ContactsList;
-/* <ul className={s.list}>
-        {contacts.map(({ id, name, number }) => (
-          <li key={id}>
-            <div className={s.listItemContainer}>
-              {name}: {number}
-              <button
-                className={s.button}
-                onClick={() => dispatch(contactsOperations.deleteContact(id))}
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul> */

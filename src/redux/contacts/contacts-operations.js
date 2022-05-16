@@ -9,6 +9,9 @@ import {
   deleteContactRequest,
   deleteContactSuccess,
   deleteContactError,
+  editContactRequest,
+  editContactSuccess,
+  editContactError,
 } from './contact-actions';
 
 const fetchContacts = () => async dispatch => {
@@ -37,6 +40,22 @@ const deleteContact = contactId => dispatch => {
     .catch(error => dispatch(deleteContactError(error.message)));
 };
 
-const contactsOperations = { fetchContacts, addContact, deleteContact };
+const editContact =
+  ({ id, name, number }) =>
+  dispatch => {
+    const update = { name, number };
+    dispatch(editContactRequest());
+    axios
+      .patch(`/contacts/${id}`, update)
+      .then(({ data }) => dispatch(editContactSuccess(data)))
+      .catch(error => dispatch(editContactError(error.message)));
+  };
+
+const contactsOperations = {
+  fetchContacts,
+  addContact,
+  deleteContact,
+  editContact,
+};
 
 export default contactsOperations;
