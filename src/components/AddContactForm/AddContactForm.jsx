@@ -1,18 +1,13 @@
 import { useState } from 'react';
-import s from './AddContactForm.module.css';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { contactsOperations, contactsSelectors } from 'redux/contacts';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ReactPhoneInput from 'react-phone-input-material-ui';
 import { useConfirm } from 'material-ui-confirm';
@@ -122,37 +117,3 @@ function AddContactForm() {
 }
 
 export default AddContactForm;
-
-{
-  /* <form className={s.form} onSubmit={handleSubmit}>
-      <label className={s.form_label}>
-        Name
-        <br />
-        <input
-          type="text"
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer"
-          required
-          value={contact.name}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label>
-        Number
-        <br />
-        <input
-          type="tel"
-          name="number"
-          required
-          value={contact.number}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <button className={s.button} type="submit">
-        Add contact
-      </button>
-    </form> */
-}
