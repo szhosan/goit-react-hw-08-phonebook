@@ -9,6 +9,7 @@ import PrivateRoute from './PrivateRoute';
 import { useSelector } from 'react-redux';
 import { authSelectors } from 'redux/auth';
 import { Navigate } from 'react-router-dom';
+import Progress from './Progress/Progress';
 const RegisterForm = lazy(() => import('./RegisterForm/RegisterForm'));
 const LoginForm = lazy(() => import('./LoginForm/LoginForm'));
 const ContactsView = lazy(() => import('./ContactsView/ContactsView'));
@@ -22,11 +23,11 @@ function App() {
   return (
     <Section>
       {isFetchingCurrentUser ? (
-        <>Loading...</>
+        <Progress />
       ) : (
         <>
           <PhoneBookAppBar />
-          <Suspense fallback={<>loading...</>}>
+          <Suspense fallback={<Progress />}>
             <Routes>
               <Route path="*" element={<Navigate to="/contacts" />} />
               <Route
