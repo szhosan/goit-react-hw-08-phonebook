@@ -62,7 +62,7 @@ const ContactsList = () => {
       .map(idToDelete => contacts.find(({ id }) => id === idToDelete).name)
       .join(', ');
     confirmDialog({
-      description: `Are you really want to delete ${namesToDelete} from your book?`,
+      description: `Are you really want to delete ${namesToDelete} from your contact book?`,
     })
       .then(() => {
         checked.map(id => dispatch(contactsOperations.deleteContact(id)));
