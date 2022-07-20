@@ -16,7 +16,7 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={<Progress />} persistor={persistor}>
         <HashRouter>
-          <BrowserRouter basename="/goit-react-hw-08-phonebook/">
+          <BrowserRouter basename="/goit-react-hw-08-phonebook">
             <App />
           </BrowserRouter>
         </HashRouter>
