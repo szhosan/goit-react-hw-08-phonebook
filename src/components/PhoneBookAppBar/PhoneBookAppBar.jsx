@@ -13,7 +13,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { authOperations } from 'redux/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 export default function PhoneBookAppBar() {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ export default function PhoneBookAppBar() {
               variant="h6"
               noWrap
               component="a"
-              href="/contacts"
+              href="goit-react-hw-08-phonebook/contacts"
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
